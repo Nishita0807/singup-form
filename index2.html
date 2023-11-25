@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style1.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Diagonal Line Background</title>
+  <style>
+    /* Initially hide the first div */
+    .signup-successful {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-successful">
+    Signup Successful!
+  </div>
+
+  <div class="signup-form">
+    <div>Profile</div>
+    <div class="profile">
+      <i class="fa fa-user"></i>
+    </div>
+    <div>Full Name: <span id="fullName">Your Name</span></div>
+    <div>Email: <span id="email">Your Email</span></div>
+    <div>Token: <span id="token">Your Token</span></div>
+    <div>Password: <span id="userPassword">Your Password</span></div>
+    <button type="submit" onclick="logout()">LOGOUT</button>
+  </div>
+
+  <script>
+    // Retrieve user details from local storage
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    // Access token check
+    if (!user || !user.accessToken) {
+      // Redirect to signup page if there's no access token
+      window.location.href = 'index.html';
+    }
+
+    // Check if the user is logged in and trying to access the signup page
+    const currentPage = window.location.href.split('/').pop();
+    if (currentPage === 'index.html' && user.accessToken) {
+      // Redirect to the profile page if the user is already logged in
+      window.location.href = 'index2.html';
+    }
+
+    // Populate user details in the HTML
+    document.getElementById('fullName').textContent = user.name;
+    document.getElementById('email').textContent = user.email;
+    document.getElementById('token').textContent = user.accessToken;
+    document.getElementById('userPassword').textContent = user.password;
+
+    // Show the signup successful div
+    document.querySelector('.signup-successful').style.display = 'block';
+
+    function logout() {
+      // Clear local storage and redirect to index.html
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

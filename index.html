@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Diagonal Line Background</title>
+</head>
+<body>
+  <div class="signup-form">
+    <div>
+      Welcome back! 👋
+    </div>
+    <div>Sign up to your account</div>
+    <div class="form-row">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="form-row">
+      <label for="email">Your Email</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-row">
+      <label for="password">Your Password</label>
+      <input type="password" id="password1" name="password" required>
+    </div>
+    <div class="form-row">
+      <label for="password">Confirm Password</label>
+      <input type="password" id="password2" name="password" required>
+    </div>
+    <button type="button" onclick="signup()">CONTINUE</button>
+    <div id="error" style="display: none;">Error: All fields are mandatory!</div>
+  </div>
+  <div class="end">Don’t have an account? <span onclick="navigateToSamePage()">Sign up</span></div>
+
+  <script>
+     function navigateToSamePage() {
+      // Reset input fields
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('password1').value = '';
+      document.getElementById('password2').value = '';
+
+      // Hide error message
+      document.getElementById('error').style.display = 'none';
+
+      // Navigate to the same page
+      window.location.href = 'index.html';
+    }
+    function signup() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password1 = document.getElementById('password1').value;
+      const password2 = document.getElementById('password2').value;
+
+      // Check if passwords match
+      if (password1 !== password2) {
+        showError('Passwords do not match!');
+        return;
+      }
+
+      if (!name || !email || !password1 || !password2) {
+        showError('All fields are mandatory!');
+        return;
+      }
+
+      // Generate a random 16-byte access token
+      const accessToken = generateRandomToken();
+
+      // Store user details in local storage
+      const user = {
+        name,
+        email,
+        accessToken,
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+
+      // Redirect to the profile page (you can implement this part)
+      window.location.href = 'index2.html';
+    }
+
+    function generateRandomToken() {
+      // Generate a random string with 16 bytes
+      const randomBytes = new Uint8Array(16);
+      window.crypto.getRandomValues(randomBytes);
+      const token = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
+      return token;
+    }
+
+    function showError(message) {
+      const errorElement = document.getElementById('error');
+      errorElement.innerText = `Error: ${message}`;
+      errorElement.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
